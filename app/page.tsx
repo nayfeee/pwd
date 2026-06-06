@@ -231,6 +231,7 @@ export default function Home() {
   const reviewsRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
   const horizontalCardsRef = useRef<HTMLDivElement | null>(null);
+  const suppressMobileCtaUntilRef = useRef(0);
 
   const isMouseDownRef = useRef(false);
   const dragStartXRef = useRef(0);
@@ -262,6 +263,11 @@ export default function Home() {
     const updateMobileCta = () => {
       const contact = contactRef.current;
       const isSmall = window.innerWidth <= 720;
+
+      if (Date.now() < suppressMobileCtaUntilRef.current) {
+        setShowMobileCta(false);
+        return;
+      }
 
       if (!contact || !isSmall) {
         setShowMobileCta(false);
@@ -381,7 +387,16 @@ export default function Home() {
 
     const isSmallScreen = window.innerWidth <= 720;
     const offset = isSmallScreen ? 136 : 24;
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    const top = Math.max(
+      0,
+      target.getBoundingClientRect().top + window.scrollY - offset
+    );
+
+    if (isSmallScreen) {
+      suppressMobileCtaUntilRef.current = Date.now() + 1400;
+      setMobileHeaderCompact(true);
+      setShowMobileCta(false);
+    }
 
     requestAnimationFrame(() => {
       window.scrollTo({

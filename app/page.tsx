@@ -568,7 +568,7 @@ export default function Home() {
 
 <div className="heroImageMobile">
   <Image
-    src="/images/mobilehero.png"
+    src="/images/pwdhero1.png"
     alt="Luxury bespoke media wall with fireplace, shelving and acoustic panelling"
     fill
     priority

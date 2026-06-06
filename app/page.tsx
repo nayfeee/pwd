@@ -1,65 +1,641 @@
+"use client";
+
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+const galleryImages = Array.from(
+  { length: 15 },
+  (_, i) => `/images/gallery/gallery${i + 1}.png`
+);
+
+const showcaseProjects = [
+  {
+    image: "/images/showcase/showcase1.png",
+    location: "Royton",
+    title: "One-day living room transformation",
+    description:
+      "A same-day media wall upgrade with warm lighting, clean lines and a premium finish.",
+  },
+  {
+    image: "/images/showcase/showcase2.png",
+    location: "Manchester",
+    title: "Luxury bespoke media wall build",
+    description:
+      "Designed around the room to create a balanced focal point with integrated fire and shelving.",
+  },
+  {
+    image: "/images/showcase/showcase3.png",
+    location: "Oldham",
+    title: "Feature wall with storage",
+    description:
+      "A practical, clutter-free design with hidden storage, acoustic panelling and ambient lighting.",
+  },
+  {
+    image: "/images/showcase/showcase4.png",
+    location: "Greater Manchester",
+    title: "Cinema-style media wall",
+    description:
+      "A bold living room upgrade built around a large screen, feature fire and clean symmetrical detailing.",
+  },
+  {
+    image: "/images/showcase/showcase5.png",
+    location: "Manchester",
+    title: "Bespoke wall built around the home",
+    description:
+      "A tailored installation planned around the existing space, finishes and how the room is used.",
+  },
+];
+
+const pwdSteps = [
+  {
+    title: "Consult",
+    text: "A free consultation to understand your room, your style and how you want the space to feel.",
+  },
+  {
+    title: "Design",
+    text: "Every wall is planned around the space — from TV placement and lighting to shelving, storage and finishes.",
+  },
+  {
+    title: "Build",
+    text: "Built cleanly, carefully and properly, with every detail considered from the first cut to the final finish.",
+  },
+  {
+    title: "Finish",
+    text: "A media wall that feels built into the home — not added afterwards.",
+  },
+];
+
+const reviews = [
+  {
+    name: "Comfort Fajimi",
+    quote:
+      "Their professionalism, attention to detail, and quality of workmanship were outstanding from start to finish. They transformed my space beautifully.",
+  },
+  {
+    name: "Tom Casey",
+    quote:
+      "Professional, reliable and clearly take pride in their work. The finish is top quality and it’s transformed the room.",
+  },
+  {
+    name: "Sam Kay",
+    quote:
+      "The service was first class from start to finish — professional, friendly, and the workmanship was excellent. The media wall looks incredible.",
+  },
+  {
+    name: "Caroline Gibson",
+    quote:
+      "The workmanship is second to none. They truly are masters of their craft. They helped me design the perfect wall for my space.",
+  },
+  {
+    name: "Tracey Maurice Close",
+    quote:
+      "Every aspect from planning the build to completion was carried out efficiently and expertly. We absolutely love the end result.",
+  },
+  {
+    name: "Sharon Pickering",
+    quote:
+      "Totally professional from start to finish. Turned up on time every time and I am so pleased with the finish.",
+  },
+];
+
+function mapScrollProgress(
+  value: number,
+  inputStart: number,
+  inputEnd: number,
+  outputStart: number,
+  outputEnd: number
+) {
+  const progress = Math.min(
+    1,
+    Math.max(0, (value - inputStart) / (inputEnd - inputStart))
+  );
+
+  return outputStart + (outputEnd - outputStart) * progress;
+}
+
+function MobilePaperStack() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const frameRef = useRef<number | null>(null);
+
+  const [cardTransforms, setCardTransforms] = useState({
+    design: 100,
+    build: 100,
+    finish: 100,
+  });
+
+  useEffect(() => {
+    const updateCards = () => {
+      const section = sectionRef.current;
+      if (!section) return;
+
+      const viewportHeight = window.innerHeight || 800;
+      const rect = section.getBoundingClientRect();
+      const scrollDistance = Math.max(1, rect.height - viewportHeight);
+
+      const progress = Math.min(
+        1,
+        Math.max(0, -rect.top / scrollDistance)
+      );
+
+      setCardTransforms({
+        design: mapScrollProgress(progress, 0.08, 0.28, 100, 0),
+        build: mapScrollProgress(progress, 0.36, 0.56, 100, 0),
+        finish: mapScrollProgress(progress, 0.64, 0.84, 100, 0),
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frameRef.current !== null) return;
+
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = null;
+        updateCards();
+      });
+    };
+
+    updateCards();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <section
+      className="mobilePaperMotionStack"
+      aria-label="The PWD Way"
+      ref={sectionRef}
+    >
+      <div className="mobilePaperMotionStage">
+        <div className="sectionLabel">The PWD Way</div>
+
+        <div className="mobilePaperMotionCards">
+          <section
+            className="mobilePaperMotionCard"
+            style={{ transform: "translate3d(0, 0%, 0)", zIndex: 1 }}
+          >
+            <h2>{pwdSteps[0].title}</h2>
+            <p>{pwdSteps[0].text}</p>
+          </section>
+
+          <section
+            className="mobilePaperMotionCard"
+            style={{
+              transform: `translate3d(0, ${cardTransforms.design}%, 0)`,
+              zIndex: 2,
+            }}
+          >
+            <h2>{pwdSteps[1].title}</h2>
+            <p>{pwdSteps[1].text}</p>
+          </section>
+
+          <section
+            className="mobilePaperMotionCard"
+            style={{
+              transform: `translate3d(0, ${cardTransforms.build}%, 0)`,
+              zIndex: 3,
+            }}
+          >
+            <h2>{pwdSteps[2].title}</h2>
+            <p>{pwdSteps[2].text}</p>
+          </section>
+
+          <section
+            className="mobilePaperMotionCard"
+            style={{
+              transform: `translate3d(0, ${cardTransforms.finish}%, 0)`,
+              zIndex: 4,
+            }}
+          >
+            <h2>{pwdSteps[3].title}</h2>
+            <p>{pwdSteps[3].text}</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
+  const heroRef = useRef<HTMLElement | null>(null);
+  const showcaseRef = useRef<HTMLElement | null>(null);
+  const pwdWayRef = useRef<HTMLDivElement | null>(null);
+  const contactRef = useRef<HTMLElement | null>(null);
+  const horizontalCardsRef = useRef<HTMLDivElement | null>(null);
+
+  const isMouseDownRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartScrollLeftRef = useRef(0);
+
+  const [isDraggingProjects, setIsDraggingProjects] = useState(false);
+  const [headerPresence, setHeaderPresence] = useState(1);
+  const [activeReview, setActiveReview] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileCta, setShowMobileCta] = useState(false);
+  const [mobileHeaderCompact, setMobileHeaderCompact] = useState(false);
+
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth <= 720);
+
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+
+    return () => window.removeEventListener("resize", updateIsMobile);
+  }, []);
+
+
+  useEffect(() => {
+    const updateMobileCta = () => {
+      const contact = contactRef.current;
+      const isSmall = window.innerWidth <= 720;
+
+      if (!contact || !isSmall) {
+        setShowMobileCta(false);
+        return;
+      }
+
+      const contactTop = contact.getBoundingClientRect().top;
+      const hasStartedScrolling = window.scrollY > 90;
+      const isBeforeContact = contactTop > window.innerHeight * 0.72;
+
+      setMobileHeaderCompact(window.scrollY > 70);
+      setShowMobileCta(hasStartedScrolling && isBeforeContact);
+    };
+
+    updateMobileCta();
+    window.addEventListener("scroll", updateMobileCta, { passive: true });
+    window.addEventListener("resize", updateMobileCta);
+
+    return () => {
+      window.removeEventListener("scroll", updateMobileCta);
+      window.removeEventListener("resize", updateMobileCta);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateHeaderPresence = () => {
+      const showcase = showcaseRef.current;
+      const pwdWay = pwdWayRef.current;
+
+      if (!showcase || !pwdWay) {
+        setHeaderPresence(1);
+        return;
+      }
+
+      const viewportHeight = window.innerHeight;
+      const showcaseTop = showcase.getBoundingClientRect().top;
+      const pwdWayTop = pwdWay.getBoundingClientRect().top;
+
+      const fadeOutStart = viewportHeight * 0.72;
+      const fadeOutEnd = 120;
+      const fadeInStart = viewportHeight * 0.38;
+      const fadeInEnd = 110;
+
+      let nextPresence = 1;
+
+      if (showcaseTop < fadeOutStart && pwdWayTop > fadeInStart) {
+        nextPresence = Math.max(
+          0,
+          Math.min(1, (showcaseTop - fadeOutEnd) / (fadeOutStart - fadeOutEnd))
+        );
+      }
+
+      if (pwdWayTop <= fadeInStart) {
+        nextPresence = Math.max(
+          0,
+          Math.min(1, (fadeInStart - pwdWayTop) / (fadeInStart - fadeInEnd))
+        );
+      }
+
+      setHeaderPresence(nextPresence);
+    };
+
+    updateHeaderPresence();
+    window.addEventListener("scroll", updateHeaderPresence, { passive: true });
+    window.addEventListener("resize", updateHeaderPresence);
+
+    return () => {
+      window.removeEventListener("scroll", updateHeaderPresence);
+      window.removeEventListener("resize", updateHeaderPresence);
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveReview((current) => (current + 1) % reviews.length);
+    }, 4600);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const handleProjectDragStart = (event: React.MouseEvent<HTMLDivElement>) => {
+    const container = horizontalCardsRef.current;
+    if (!container) return;
+
+    isMouseDownRef.current = true;
+    setIsDraggingProjects(true);
+    dragStartXRef.current = event.pageX - container.offsetLeft;
+    dragStartScrollLeftRef.current = container.scrollLeft;
+  };
+
+  const handleProjectDragMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const container = horizontalCardsRef.current;
+    if (!container || !isMouseDownRef.current) return;
+
+    event.preventDefault();
+    const x = event.pageX - container.offsetLeft;
+    const walk = (x - dragStartXRef.current) * 1.15;
+    container.scrollLeft = dragStartScrollLeftRef.current - walk;
+  };
+
+  const stopProjectDrag = () => {
+    isMouseDownRef.current = false;
+    setIsDraggingProjects(false);
+  };
+
+  const logoSize = useTransform(heroProgress, [0, 0.22], ["52px", "30px"]);
+  const logoY = useTransform(heroProgress, [0, 0.22], [0, 0]);
+
+  const mobileLogoSize = useTransform(heroProgress, [0, 0.18], ["66px", "30px"]);
+
+  const headerColor = useTransform(
+    heroProgress,
+    [0, 0.72, 0.86],
+    ["#ffffff", "#ffffff", "#211d1b"]
+  );
+
+  const headerBg = useTransform(
+    heroProgress,
+    [0, 0.55, 0.86],
+    [
+      "rgba(246, 243, 237, 0.12)",
+      "rgba(246, 243, 237, 0.28)",
+      "rgba(246, 243, 237, 0.78)",
+    ]
+  );
+
+  const mobileHeaderBg = useTransform(
+    heroProgress,
+    [0, 0.55, 0.86],
+    [
+      "rgba(246, 243, 237, 0.035)",
+      "rgba(246, 243, 237, 0.08)",
+      "rgba(246, 243, 237, 0.16)",
+    ]
+  );
+
+  const ctaBg = useTransform(
+    heroProgress,
+    [0, 0.86],
+    ["rgba(255, 255, 255, 0.2)", "rgba(33, 29, 27, 0.08)"]
+  );
+
+  const heroTitleY = useTransform(heroProgress, [0, 1], [0, -86]);
+  const heroTitleOpacity = useTransform(heroProgress, [0, 0.78, 1], [1, 1, 0.62]);
+
+  const currentReview = reviews[activeReview];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main>
+      <motion.header
+        className="siteHeader"
+        style={{
+          background: isMobile ? mobileHeaderBg : headerBg,
+          color: headerColor,
+          opacity: isMobile ? 1 : headerPresence,
+          pointerEvents: isMobile || headerPresence > 0.15 ? "auto" : "none",
+        }}
+      >
+        <nav className="desktopNav" aria-label="Main navigation">
+          <div className="navSide navLeft">
+            <a href="#projects">Projects</a>
+            <a href="#pwd-way">The PWD Way</a>
+            <a href="#gallery">Gallery</a>
+          </div>
+
+          <motion.a
+            href="#top"
+            className="brandMark"
+            style={{ fontSize: logoSize, y: logoY }}
+            aria-label="PWD home"
+          >
+            PWD
+          </motion.a>
+
+          <div className="navSide navRight">
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+            <motion.a
+              href="tel:07782913456"
+              className="navCta"
+              style={{ background: ctaBg }}
+            >
+              Free Consultation
+            </motion.a>
+          </div>
+        </nav>
+
+        <nav className="mobileNav" aria-label="Mobile navigation">
+          <motion.div
+            className="mobileNavLinks"
+            initial={false}
+            animate={
+              isMobile && mobileHeaderCompact
+                ? { opacity: 0, y: -14, height: 0, marginBottom: 0 }
+                : { opacity: 1, y: 0, height: "auto", marginBottom: 0 }
+            }
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <a href="#pwd-way">The PWD Way</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#reviews">Reviews</a>
+            <a href="tel:07782913456">Call</a>
+          </motion.div>
+
+          <motion.a
+            href="#top"
+            className="mobileBrand"
+            aria-label="PWD home"
+            style={{ fontSize: mobileLogoSize }}
+          >
+            PWD
+          </motion.a>
+        </nav>
+      </motion.header>
+
+      <AnimatePresence>
+        {showMobileCta && (
+          <motion.a
+            href="#contact"
+            className="mobileBottomCta"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 18 }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          >
+            Book Your Free Consultation
+            <span aria-hidden="true">→</span>
+          </motion.a>
+        )}
+      </AnimatePresence>
+
+      <section className="hero" id="top" ref={heroRef}>
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/images/pwdhero1.png"
+          alt="Luxury bespoke media wall with fireplace, shelving and acoustic panelling"
+          fill
           priority
+          className="heroImage"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="heroOverlay" />
+
+        <div className="heroContent">
+          <motion.div
+            className="heroTitleWrap"
+            style={{ y: heroTitleY, opacity: heroTitleOpacity }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            <motion.h1
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Luxury Media Walls Across Manchester
+            </motion.h1>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="intro">
+        <p>
+          Bespoke media walls, feature fireplaces, acoustic panelling, shelving,
+          hidden storage and ambient lighting — designed around your home.
+        </p>
+      </section>
+
+      <section className="showcase" id="projects" ref={showcaseRef}>
+        <div className="sectionLabel">Recent Work</div>
+        <div
+          ref={horizontalCardsRef}
+          className={`horizontalCards${isDraggingProjects ? " isDragging" : ""}`}
+          onMouseDown={handleProjectDragStart}
+          onMouseMove={handleProjectDragMove}
+          onMouseUp={stopProjectDrag}
+          onMouseLeave={stopProjectDrag}
+        >
+          {showcaseProjects.map((project) => (
+            <article key={project.image} className="projectPanel">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+              />
+              <div>
+                <span>{project.location}</span>
+                <h2>{project.title}</h2>
+                <p>{project.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div id="pwd-way" ref={pwdWayRef}>
+        <section className="paperStack desktopPaperStack">
+          <div className="sectionLabel">The PWD Way</div>
+
+          <div className="stackInner">
+            {pwdSteps.map((step, index) => (
+              <section
+                key={step.title}
+                className="paperStep"
+                style={{ zIndex: index + 1 }}
+              >
+                <h2>{step.title}</h2>
+                <p>{step.text}</p>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <MobilePaperStack />
+      </div>
+
+      <section className="movingGallery" id="gallery">
+        <div className="sectionLabel">Gallery</div>
+        <div className="marquee">
+          {[...galleryImages, ...galleryImages].map((src, index) => (
+            <div className="galleryItem" key={`${src}-${index}`}>
+              <Image
+                src={src}
+                alt={`PWD gallery image ${index + 1}`}
+                height={420}
+                width={620}
+                style={{ width: "auto" }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="reviews" id="reviews">
+        <div className="reviewTopline">
+          <span>Reviews</span>
+          <span>50 Facebook recommendations</span>
+        </div>
+
+        <h2>Trusted in homes across Manchester.</h2>
+
+        <div className="reviewStage">
+          <AnimatePresence mode="wait">
+            <motion.blockquote
+              key={activeReview}
+              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -24, filter: "blur(8px)" }}
+              transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            >
+              “{currentReview.quote}”
+              <footer>{currentReview.name}</footer>
+            </motion.blockquote>
+          </AnimatePresence>
+        </div>
+
+        <a
+          className="reviewLink"
+          href="https://www.facebook.com/PWDMediaWalls/reviews"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Read our reviews
+          <span aria-hidden="true">→</span>
+        </a>
+      </section>
+
+      <section className="contact" id="contact" ref={contactRef}>
+        <p>Ready to plan your media wall?</p>
+        <h2>Book a free consultation.</h2>
+        <div className="contactLinks">
+          <a href="tel:07782913456">07782 913456</a>
+          <a href="https://wa.me/447782913456">WhatsApp</a>
+          <a href="mailto:hello@premiumwalldesigns.co.uk">
+            hello@premiumwalldesigns.co.uk
           </a>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

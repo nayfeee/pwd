@@ -365,12 +365,7 @@ export default function Home() {
     setIsDraggingProjects(false);
   };
 
-  const scrollToSection = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    id: string
-  ) => {
-    event.preventDefault();
-
+  const scrollToSection = (id: string) => {
     const target = document.getElementById(id);
     if (!target) return;
 
@@ -439,9 +434,9 @@ export default function Home() {
       >
         <nav className="desktopNav" aria-label="Main navigation">
           <div className="navSide navLeft">
-            <a href="#projects" onClick={(event) => scrollToSection(event, "projects")}>Projects</a>
-            <a href="#pwd-way" onClick={(event) => scrollToSection(event, "pwd-way")}>The PWD Way</a>
-            <a href="#gallery" onClick={(event) => scrollToSection(event, "gallery")}>Gallery</a>
+            <a href="#projects" onClick={(event) => { event.preventDefault(); scrollToSection("projects"); }}>Projects</a>
+            <a href="#pwd-way" onClick={(event) => { event.preventDefault(); scrollToSection("pwd-way"); }}>The PWD Way</a>
+            <a href="#gallery" onClick={(event) => { event.preventDefault(); scrollToSection("gallery"); }}>Gallery</a>
           </div>
 
           <motion.a
@@ -454,8 +449,8 @@ export default function Home() {
           </motion.a>
 
           <div className="navSide navRight">
-            <a href="#reviews" onClick={(event) => scrollToSection(event, "reviews")}>Reviews</a>
-            <a href="#contact" onClick={(event) => scrollToSection(event, "contact")}>Contact</a>
+            <a href="#reviews" onClick={(event) => { event.preventDefault(); scrollToSection("reviews"); }}>Reviews</a>
+            <a href="#contact" onClick={(event) => { event.preventDefault(); scrollToSection("contact"); }}>Contact</a>
             <motion.a
               href="tel:07782913456"
               className="navCta"
@@ -477,15 +472,15 @@ export default function Home() {
             }
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           >
-            <a href="#pwd-way" onClick={(event) => scrollToSection(event, "pwd-way")}>
+            <button type="button" onClick={() => scrollToSection("pwd-way")}>
               The PWD Way
-            </a>
-            <a href="#gallery" onClick={(event) => scrollToSection(event, "gallery")}>
+            </button>
+            <button type="button" onClick={() => scrollToSection("gallery")}>
               Gallery
-            </a>
-            <a href="#reviews" onClick={(event) => scrollToSection(event, "reviews")}>
+            </button>
+            <button type="button" onClick={() => scrollToSection("reviews")}>
               Reviews
-            </a>
+            </button>
             <a href="tel:07782913456">Call</a>
           </motion.div>
 

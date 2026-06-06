@@ -577,8 +577,23 @@ img {
     will-change: transform, opacity;
   }
 
-  .mobileNavLinks a {
+  .mobileNavLinks a,
+  .mobileNavLinks button {
     opacity: 0.96;
+  }
+
+  .mobileNavLinks button {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
   }
 
   .mobileBrand {

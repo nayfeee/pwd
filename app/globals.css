@@ -708,7 +708,7 @@ img {
   .mobilePaperMotionStack {
     display: block;
     position: relative;
-    height: 420svh;
+    height: 430vh;
     padding: 0 18px;
     background: var(--paper);
     overflow: visible;
@@ -717,14 +717,14 @@ img {
   .mobilePaperMotionStage {
     position: sticky;
     top: 0;
-    height: 100svh;
+    height: 100vh;
     overflow: hidden;
     background: var(--paper);
   }
 
   .mobilePaperMotionStage > .sectionLabel {
     position: absolute;
-    top: 118px;
+    top: 116px;
     left: 0;
     right: 0;
     z-index: 10;
@@ -733,7 +733,7 @@ img {
 
   .mobilePaperMotionCards {
     position: absolute;
-    inset: 148px 0 58px;
+    inset: 146px 0 64px;
     overflow: hidden;
   }
 
@@ -748,6 +748,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transform: translate3d(0, 100%, 0);
   }
 
   .mobilePaperMotionCard h2 {

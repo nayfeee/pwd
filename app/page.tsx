@@ -99,62 +99,66 @@ const reviews = [
   },
 ];
 
-function mapScrollProgress(
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function mapRange(
   value: number,
   inputStart: number,
   inputEnd: number,
   outputStart: number,
   outputEnd: number
 ) {
-  const progress = Math.min(
-    1,
-    Math.max(0, (value - inputStart) / (inputEnd - inputStart))
-  );
-
+  const progress = clamp((value - inputStart) / (inputEnd - inputStart), 0, 1);
   return outputStart + (outputEnd - outputStart) * progress;
 }
 
 function MobilePaperStack() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const frameRef = useRef<number | null>(null);
-
-  const [cardTransforms, setCardTransforms] = useState({
-    design: 100,
-    build: 100,
-    finish: 100,
-  });
+  const designRef = useRef<HTMLElement | null>(null);
+  const buildRef = useRef<HTMLElement | null>(null);
+  const finishRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const updateCards = () => {
+    let frameId: number | null = null;
+
+    const updateStack = () => {
+      frameId = null;
+
       const section = sectionRef.current;
       if (!section) return;
 
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
       const viewportHeight = window.innerHeight || 800;
-      const rect = section.getBoundingClientRect();
-      const scrollDistance = Math.max(1, rect.height - viewportHeight);
+      const travel = Math.max(1, sectionHeight - viewportHeight);
 
-      const progress = Math.min(
-        1,
-        Math.max(0, -rect.top / scrollDistance)
-      );
+      const progress = clamp((window.scrollY - sectionTop) / travel, 0, 1);
 
-      setCardTransforms({
-        design: mapScrollProgress(progress, 0.08, 0.28, 100, 0),
-        build: mapScrollProgress(progress, 0.36, 0.56, 100, 0),
-        finish: mapScrollProgress(progress, 0.64, 0.84, 100, 0),
-      });
+      const designY = mapRange(progress, 0.02, 0.28, 100, 0);
+      const buildY = mapRange(progress, 0.34, 0.60, 100, 0);
+      const finishY = mapRange(progress, 0.66, 0.92, 100, 0);
+
+      if (designRef.current) {
+        designRef.current.style.transform = `translate3d(0, ${designY}%, 0)`;
+      }
+
+      if (buildRef.current) {
+        buildRef.current.style.transform = `translate3d(0, ${buildY}%, 0)`;
+      }
+
+      if (finishRef.current) {
+        finishRef.current.style.transform = `translate3d(0, ${finishY}%, 0)`;
+      }
     };
 
     const requestUpdate = () => {
-      if (frameRef.current !== null) return;
-
-      frameRef.current = window.requestAnimationFrame(() => {
-        frameRef.current = null;
-        updateCards();
-      });
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(updateStack);
     };
 
-    updateCards();
+    updateStack();
 
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
@@ -163,8 +167,8 @@ function MobilePaperStack() {
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
 
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
       }
     };
   }, []);
@@ -188,33 +192,27 @@ function MobilePaperStack() {
           </section>
 
           <section
+            ref={designRef}
             className="mobilePaperMotionCard"
-            style={{
-              transform: `translate3d(0, ${cardTransforms.design}%, 0)`,
-              zIndex: 2,
-            }}
+            style={{ transform: "translate3d(0, 100%, 0)", zIndex: 2 }}
           >
             <h2>{pwdSteps[1].title}</h2>
             <p>{pwdSteps[1].text}</p>
           </section>
 
           <section
+            ref={buildRef}
             className="mobilePaperMotionCard"
-            style={{
-              transform: `translate3d(0, ${cardTransforms.build}%, 0)`,
-              zIndex: 3,
-            }}
+            style={{ transform: "translate3d(0, 100%, 0)", zIndex: 3 }}
           >
             <h2>{pwdSteps[2].title}</h2>
             <p>{pwdSteps[2].text}</p>
           </section>
 
           <section
+            ref={finishRef}
             className="mobilePaperMotionCard"
-            style={{
-              transform: `translate3d(0, ${cardTransforms.finish}%, 0)`,
-              zIndex: 4,
-            }}
+            style={{ transform: "translate3d(0, 100%, 0)", zIndex: 4 }}
           >
             <h2>{pwdSteps[3].title}</h2>
             <p>{pwdSteps[3].text}</p>

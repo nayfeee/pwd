@@ -386,7 +386,7 @@ export default function Home() {
     if (!target) return;
 
     const isSmallScreen = window.innerWidth <= 720;
-    const offset = isSmallScreen ? 136 : 24;
+    const offset = isSmallScreen ? 100 : 24;
     const top = Math.max(
       0,
       target.getBoundingClientRect().top + window.scrollY - offset
@@ -394,7 +394,6 @@ export default function Home() {
 
     if (isSmallScreen) {
       suppressMobileCtaUntilRef.current = Date.now() + 1400;
-      setMobileHeaderCompact(true);
       setShowMobileCta(false);
     }
 
@@ -640,7 +639,7 @@ export default function Home() {
       <section className="movingGallery" id="gallery" ref={galleryRef}>
         <div className="sectionLabel">Gallery</div>
         <div className="marquee">
-          {[...galleryImages, ...galleryImages].map((src, index) => (
+          {[...galleryImages, ...galleryImages, ...galleryImages].map((src, index) => (
             <div className="galleryItem" key={`${src}-${index}`}>
               <Image
                 src={src}

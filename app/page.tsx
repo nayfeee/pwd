@@ -227,6 +227,8 @@ export default function Home() {
   const heroRef = useRef<HTMLElement | null>(null);
   const showcaseRef = useRef<HTMLElement | null>(null);
   const pwdWayRef = useRef<HTMLDivElement | null>(null);
+  const galleryRef = useRef<HTMLElement | null>(null);
+  const reviewsRef = useRef<HTMLElement | null>(null);
   const contactRef = useRef<HTMLElement | null>(null);
   const horizontalCardsRef = useRef<HTMLDivElement | null>(null);
 
@@ -366,16 +368,26 @@ export default function Home() {
   };
 
   const scrollToSection = (id: string) => {
-    const target = document.getElementById(id);
+    const targets: Record<string, HTMLElement | HTMLDivElement | null> = {
+      projects: showcaseRef.current,
+      "pwd-way": pwdWayRef.current,
+      gallery: galleryRef.current,
+      reviews: reviewsRef.current,
+      contact: contactRef.current,
+    };
+
+    const target = targets[id] ?? document.getElementById(id);
     if (!target) return;
 
     const isSmallScreen = window.innerWidth <= 720;
     const offset = isSmallScreen ? 136 : 24;
     const top = target.getBoundingClientRect().top + window.scrollY - offset;
 
-    window.scrollTo({
-      top,
-      behavior: "smooth",
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top,
+        behavior: "smooth",
+      });
     });
   };
 
@@ -472,13 +484,31 @@ export default function Home() {
             }
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           >
-            <button type="button" onClick={() => scrollToSection("pwd-way")}>
+            <button
+              type="button"
+              onPointerDown={(event) => {
+                event.preventDefault();
+                scrollToSection("pwd-way");
+              }}
+            >
               The PWD Way
             </button>
-            <button type="button" onClick={() => scrollToSection("gallery")}>
+            <button
+              type="button"
+              onPointerDown={(event) => {
+                event.preventDefault();
+                scrollToSection("gallery");
+              }}
+            >
               Gallery
             </button>
-            <button type="button" onClick={() => scrollToSection("reviews")}>
+            <button
+              type="button"
+              onPointerDown={(event) => {
+                event.preventDefault();
+                scrollToSection("reviews");
+              }}
+            >
               Reviews
             </button>
             <a href="tel:07782913456">Call</a>
@@ -592,7 +622,7 @@ export default function Home() {
         <MobilePaperStack />
       </div>
 
-      <section className="movingGallery" id="gallery">
+      <section className="movingGallery" id="gallery" ref={galleryRef}>
         <div className="sectionLabel">Gallery</div>
         <div className="marquee">
           {[...galleryImages, ...galleryImages].map((src, index) => (
@@ -609,7 +639,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reviews" id="reviews">
+      <section className="reviews" id="reviews" ref={reviewsRef}>
         <div className="reviewTopline">
           <span>Reviews</span>
           <span>50 Facebook recommendations</span>

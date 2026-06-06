@@ -560,6 +560,8 @@ img {
   }
 
   .mobileNavLinks {
+    position: relative;
+    z-index: 5;
     width: 100%;
     max-width: 360px;
     margin: 0 auto;
@@ -575,6 +577,7 @@ img {
     letter-spacing: -0.055em;
     white-space: nowrap;
     will-change: transform, opacity;
+    pointer-events: auto;
   }
 
   .mobileNavLinks a,
@@ -594,9 +597,12 @@ img {
     font-weight: inherit;
     letter-spacing: inherit;
     cursor: pointer;
+    touch-action: manipulation;
   }
 
   .mobileBrand {
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -908,15 +914,3 @@ img {
   }
 }
  
-@media (max-width: 720px) {
-  .mobileNavLinks {
-    position: relative;
-    z-index: 5;
-    pointer-events: auto;
-  }
-
-  .mobileBrand {
-    position: relative;
-    z-index: 1;
-  }
-}

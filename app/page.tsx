@@ -656,7 +656,6 @@ export default function Home() {
       <section className="reviews" id="reviews" ref={reviewsRef}>
         <div className="reviewTopline">
           <span>Reviews</span>
-          <span>50 Facebook recommendations</span>
         </div>
 
         <h2>Trusted in homes across Manchester.</h2>

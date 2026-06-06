@@ -41,11 +41,12 @@ img {
   display: block;
 }
 
+#projects,
 #pwd-way,
 #gallery,
 #reviews,
 #contact {
-  scroll-margin-top: 120px;
+  scroll-margin-top: 24px;
 }
 
 /* Header */
@@ -524,6 +525,14 @@ img {
     max-width: 100%;
   }
 
+  #projects,
+  #pwd-way,
+  #gallery,
+  #reviews,
+  #contact {
+    scroll-margin-top: 136px;
+  }
+
   .siteHeader {
     height: 136px;
     color: white;
@@ -661,7 +670,20 @@ img {
   }
 
   .showcase {
+    position: relative;
     padding: 64px 0 72px 18px;
+  }
+
+  .showcase::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 56px;
+    pointer-events: none;
+    background: linear-gradient(to left, var(--paper), transparent);
+    z-index: 5;
   }
 
   .horizontalCards {
@@ -673,7 +695,7 @@ img {
   }
 
   .projectPanel {
-    flex: 0 0 calc(100vw - 36px);
+    flex: 0 0 calc(100vw - 72px);
     height: 72svh;
     min-height: 510px;
     max-height: 620px;

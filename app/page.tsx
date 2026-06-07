@@ -567,12 +567,24 @@ export default function Home() {
 </div>
 
 <div className="heroImageMobile">
+  <video
+    className="heroVideo"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+    poster="/images/pwdhero1.png"
+  >
+    <source src="/videos/mobilehero.mp4" type="video/mp4" />
+  </video>
+
   <Image
     src="/images/pwdhero1.png"
     alt="Luxury bespoke media wall with fireplace, shelving and acoustic panelling"
     fill
     priority
-    className="heroImage"
+    className="heroImage heroFallback"
   />
 </div>
         <div className="heroOverlay" />

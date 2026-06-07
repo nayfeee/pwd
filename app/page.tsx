@@ -12,38 +12,38 @@ const galleryImages = Array.from(
 const showcaseProjects = [
   {
     image: "/images/showcase/showcase1.png",
-    location: "Royton",
-    title: "One-day living room transformation",
+    location: "Greater Manchester",
+    title: "The Dream Wall",
     description:
-      "A same-day media wall upgrade with warm lighting, clean lines and a premium finish.",
+      "Integrated storage, warm LED lighting, acoustic panelling, a recessed TV and feature fireplace—everything needed to create a stunning focal point.",
   },
   {
     image: "/images/showcase/showcase2.png",
-    location: "Manchester",
-    title: "Luxury bespoke media wall build",
+    location: "Greater Manchester",
+    title: "The Focal Point",
     description:
-      "Designed around the room to create a balanced focal point with integrated fire and shelving.",
+      "White marble-effect panels create a bright, luxurious finish, complemented by illuminated display shelving, a recessed TV and a contemporary fireplace for a sleek, showroom-quality look.",
   },
   {
     image: "/images/showcase/showcase3.png",
-    location: "Oldham",
-    title: "Feature wall with storage",
+    location: "Greater Manchester",
+    title: "Bright, Bold & Eye-Catching",
     description:
-      "A practical, clutter-free design with hidden storage, acoustic panelling and ambient lighting.",
+      "Rich walnut-topped cabinetry, white stone panelling and a rustic oak mantel create a warm, premium look, finished with illuminated shelving and a fully bespoke fit.",
   },
   {
     image: "/images/showcase/showcase4.png",
     location: "Greater Manchester",
-    title: "Cinema-style media wall",
+    title: "The Hidden Storage Media Wall",
     description:
-      "A bold living room upgrade built around a large screen, feature fire and clean symmetrical detailing.",
+      "Flush hidden storage, a floating TV, a panoramic fireplace and bespoke illuminated shelving come together to create a sleek, luxurious focal point with everyday practicality built in.",
   },
   {
     image: "/images/showcase/showcase5.png",
-    location: "Manchester",
-    title: "Bespoke wall built around the home",
+    location: "Greater Manchester",
+    title: "Signature Summer Media Wall",
     description:
-      "A tailored installation planned around the existing space, finishes and how the room is used.",
+      "Grey slatted detailing, ambient LED lighting, a mounted TV and a recessed fire combine to create a sleek, modern focal point.",
   },
 ];
 
@@ -721,7 +721,7 @@ export default function Home() {
           <span>Reviews</span>
         </div>
 
-        <h2>Trusted in homes across Manchester.</h2>
+        <h2>Trusted in homes across Greater Manchester.</h2>
 
         <div className="reviewStage">
           <AnimatePresence mode="wait">

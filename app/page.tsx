@@ -611,7 +611,7 @@ export default function Home() {
                       initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={{ opacity: 0, y: -18, filter: "blur(10px)" }}
-                      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     >
                       {currentHeroWord}
                     </motion.span>

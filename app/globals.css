@@ -169,18 +169,18 @@ img {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 23% 62%, rgba(0, 0, 0, 0.48), transparent 36%),
+    radial-gradient(circle at 50% 58%, rgba(0, 0, 0, 0.54), transparent 34%),
     linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.62),
-      rgba(0, 0, 0, 0.2) 54%,
-      rgba(0, 0, 0, 0.3)
+      rgba(0, 0, 0, 0.56),
+      rgba(0, 0, 0, 0.48) 50%,
+      rgba(0, 0, 0, 0.5)
     ),
     linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.22),
-      rgba(0, 0, 0, 0.04) 42%,
-      rgba(0, 0, 0, 0.3)
+      rgba(0, 0, 0, 0.34),
+      rgba(0, 0, 0, 0.18) 42%,
+      rgba(0, 0, 0, 0.42)
     );
 }
 
@@ -189,28 +189,57 @@ img {
   z-index: 2;
   min-height: 100svh;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: 0 8vw 7vw;
+  align-items: center;
+  justify-content: center;
+  padding: 9vw 8vw 6vw;
 }
 
 .heroTitleWrap {
-  width: auto;
-  max-width: 860px;
-  margin-left: 0;
-  text-align: left;
+  width: min(920px, 76vw);
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
   will-change: transform, opacity;
 }
 
 .hero h1 {
-  max-width: 860px;
-  margin: 0;
+  max-width: 920px;
+  margin: 0 auto;
   color: white;
-  font-size: clamp(58px, 8.2vw, 118px);
-  line-height: 0.88;
+  font-size: clamp(52px, 6.2vw, 92px);
+  line-height: 0.9;
   letter-spacing: -0.085em;
   text-wrap: balance;
-  text-shadow: 0 24px 80px rgba(0, 0, 0, 0.52);
+  text-shadow: 0 24px 80px rgba(0, 0, 0, 0.62);
+}
+
+.heroDesktopTitle,
+.heroMobileTitle {
+  display: block;
+}
+
+.heroDesktopTitle {
+  display: grid;
+  gap: 0;
+}
+
+.heroDesktopTitle > span {
+  display: block;
+}
+
+.heroWordSlot {
+  position: relative;
+  min-height: 0.9em;
+}
+
+.heroChangingWord {
+  display: inline-block;
+  font-style: italic;
+  will-change: transform, opacity, filter;
+}
+
+.heroMobileTitle {
+  display: none;
 }
 
 .heroMobilePlan {
@@ -715,6 +744,7 @@ img {
 }
 
   .heroContent {
+    align-items: flex-end;
     justify-content: flex-start;
     padding: 0 18px 42px;
   }
@@ -731,6 +761,14 @@ img {
     font-size: clamp(46px, 15vw, 72px);
     line-height: 0.9;
     letter-spacing: -0.085em;
+  }
+
+  .heroDesktopTitle {
+    display: none;
+  }
+
+  .heroMobileTitle {
+    display: block;
   }
 
   .heroMobilePlan {

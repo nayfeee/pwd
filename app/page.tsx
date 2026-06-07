@@ -99,6 +99,8 @@ const reviews = [
   },
 ];
 
+const heroWords = ["Luxury", "Bespoke", "Premium"];
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
@@ -240,6 +242,7 @@ export default function Home() {
   const [isDraggingProjects, setIsDraggingProjects] = useState(false);
   const [headerPresence, setHeaderPresence] = useState(1);
   const [activeReview, setActiveReview] = useState(0);
+  const [activeHeroWord, setActiveHeroWord] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileCta, setShowMobileCta] = useState(false);
   const [mobileHeaderCompact, setMobileHeaderCompact] = useState(false);
@@ -348,6 +351,14 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveHeroWord((current) => (current + 1) % heroWords.length);
+    }, 3200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   const handleProjectDragStart = (event: React.MouseEvent<HTMLDivElement>) => {
     const container = horizontalCardsRef.current;
     if (!container) return;
@@ -446,6 +457,7 @@ export default function Home() {
   const heroTitleOpacity = useTransform(heroProgress, [0, 0.78, 1], [1, 1, 0.62]);
 
   const currentReview = reviews[activeReview];
+  const currentHeroWord = heroWords[activeHeroWord];
 
   return (
     <main>
@@ -590,7 +602,28 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              Luxury Media Walls Across Manchester
+              <span className="heroDesktopTitle">
+                <span className="heroWordSlot">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentHeroWord}
+                      className="heroChangingWord"
+                      initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -18, filter: "blur(10px)" }}
+                      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {currentHeroWord}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+                <span>Media Walls</span>
+                <span>Across Manchester</span>
+              </span>
+
+              <span className="heroMobileTitle">
+                Luxury Media Walls Across Manchester
+              </span>
             </motion.h1>
 
             <motion.a

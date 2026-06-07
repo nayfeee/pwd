@@ -140,6 +140,20 @@ img {
   object-fit: cover;
 }
 
+.heroImageDesktop,
+.heroImageMobile {
+  position: absolute;
+  inset: 0;
+}
+
+.heroImageDesktop {
+  display: block;
+}
+
+.heroImageMobile {
+  display: none;
+}
+
 .heroVideo {
   position: absolute;
   inset: 0;
@@ -147,12 +161,9 @@ img {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  z-index: 2;
-}
-
-.heroFallback {
   z-index: 1;
 }
+
 
 .heroOverlay {
   position: absolute;
@@ -375,6 +386,7 @@ img {
   padding: 8vw 0;
   overflow: hidden;
   background: var(--paper-light);
+  contain: paint;
 }
 
 .movingGallery .sectionLabel {
@@ -385,21 +397,27 @@ img {
   display: flex;
   gap: 18px;
   width: max-content;
-  animation: scrollGallery 64s linear infinite;
+  animation: scrollGallery 78s linear infinite;
   will-change: transform;
   transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .galleryItem {
   height: 420px;
   flex: 0 0 auto;
   overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .galleryItem img {
   width: auto;
   height: 420px;
   object-fit: cover;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @keyframes scrollGallery {
@@ -672,20 +690,6 @@ img {
     object-position: 30% center;
   }
 
-  .heroImageDesktop,
-.heroImageMobile {
-  position: absolute;
-  inset: 0;
-}
-
-.heroImageDesktop {
-  display: block;
-}
-
-.heroImageMobile {
-  display: none;
-}
-
  .heroOverlay {
   background:
     linear-gradient(
@@ -865,7 +869,7 @@ img {
 
   .marquee {
     gap: 10px;
-    animation-duration: 52s;
+    animation-duration: 62s;
   }
 
   .galleryItem,

@@ -574,18 +574,9 @@ export default function Home() {
     loop
     playsInline
     preload="auto"
-    poster="/images/pwdhero1.png"
   >
     <source src="/videos/mobilehero.mp4" type="video/mp4" />
   </video>
-
-  <Image
-    src="/images/pwdhero1.png"
-    alt="Luxury bespoke media wall with fireplace, shelving and acoustic panelling"
-    fill
-    priority
-    className="heroImage heroFallback"
-  />
 </div>
         <div className="heroOverlay" />
 
@@ -665,12 +656,12 @@ export default function Home() {
         <div className="marquee">
           {[...galleryImages, ...galleryImages, ...galleryImages].map((src, index) => (
             <div className="galleryItem" key={`${src}-${index}`}>
-              <Image
+              <img
                 src={src}
                 alt={`PWD gallery image ${index + 1}`}
-                height={420}
-                width={620}
-                style={{ width: "auto" }}
+                loading="eager"
+                decoding="async"
+                draggable={false}
               />
             </div>
           ))}

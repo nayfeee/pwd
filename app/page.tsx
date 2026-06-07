@@ -354,7 +354,7 @@ export default function Home() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveHeroWord((current) => (current + 1) % heroWords.length);
-    }, 3200);
+    }, 6000);
 
     return () => window.clearInterval(timer);
   }, []);

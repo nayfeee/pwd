@@ -235,6 +235,7 @@ img {
 .heroChangingWord {
   display: inline-block;
   font-style: normal;
+  font-size: 0.8em;
   will-change: transform, opacity, filter;
 }
 

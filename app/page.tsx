@@ -34,7 +34,7 @@ const showcaseProjects = [
   {
     image: "/images/showcase/showcase4.png",
     location: "Greater Manchester",
-    title: "The Hidden Storage Media Wall",
+    title: "Hidden Storage Media Wall",
     description:
       "Flush hidden storage, a floating TV, a panoramic fireplace and bespoke illuminated shelving come together to create a sleek, luxurious focal point with everyday practicality built in.",
   },
